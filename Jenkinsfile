@@ -31,6 +31,18 @@ pipeline {
                 bat 'terraform apply -auto-approve tfplan'
             }
         }
+        stage('Wait for 3 Minutes') {
+            steps {
+                script {
+                    sleep(time: 3, unit: 'MINUTES') // Wait for 3 minutes
+                }
+            }
+        }
+        stage('Terraform Destroy') {
+            steps {
+                bat 'terraform destroy -auto-approve'
+            }
+        }
     }
     post {
         always {
