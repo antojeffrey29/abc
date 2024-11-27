@@ -12,18 +12,20 @@ pipeline {
         }
         stage('Initialize Terraform') {
             steps {
-                script {
-                    try {
-                        bat 'terraform init'
-                    } catch (Exception e) {
-                        error "Terraform initialization failed: ${e.message}"
-                    }
-                }
+                bat 'terraform init'
             }
         }
         stage('Terraform Plan') {
             steps {
                 bat 'terraform plan -out=tfplan'
+            }
+        }
+        stage('Approve Apply') {
+            steps {
+                script {
+                    // Prompt user for confirmation
+                    input message: 'Do you want to proceed with `terraform apply`?', ok: 'Yes, proceed', timeout:3
+                }
             }
         }
         stage('Terraform Apply') {
