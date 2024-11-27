@@ -13,22 +13,22 @@ pipeline {
         stage('Initialize Terraform') {
             steps {
                 script {
-                try {
-                    sh 'terraform init'
-                } catch (Exception e) {
-                    error "Terraform initialization failed: ${e.message}"
+                    try {
+                        bat 'terraform init'
+                    } catch (Exception e) {
+                        error "Terraform initialization failed: ${e.message}"
+                    }
                 }
-        }
             }
         }
         stage('Terraform Plan') {
             steps {
-                sh 'terraform plan -out=tfplan'
+                bat 'terraform plan -out=tfplan'
             }
         }
         stage('Terraform Apply') {
             steps {
-                sh 'terraform apply -auto-approve tfplan'
+                bat 'terraform apply -auto-approve tfplan'
             }
         }
     }
