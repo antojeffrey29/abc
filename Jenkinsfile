@@ -12,7 +12,13 @@ pipeline {
         }
         stage('Initialize Terraform') {
             steps {
-                sh 'terraform init'
+                script {
+                try {
+                    sh 'terraform init'
+                } catch (Exception e) {
+                    error "Terraform initialization failed: ${e.message}"
+                }
+        }
             }
         }
         stage('Terraform Plan') {
